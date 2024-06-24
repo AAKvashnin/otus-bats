@@ -8,15 +8,28 @@ trait Show[A] {
 object Show {
 
   // 1.1 Instances (`Int`, `String`, `Boolean`)
+  implicit val showInt:Show[Int] = new Show[Int] {
+    def show(a: Int): String = a.toString
+  }
 
+  implicit val showString:Show[String]=new Show[String] {
+    def show(a: String): String = a
+  }
+
+  implicit val showBoolean: Show[Boolean] = new Show[Boolean] {
+    def show(a: Boolean): String = a.toString
+  }
 
   // 1.2 Instances with conditional implicit
 
-  implicit def listShow[A](implicit ev: Show[A]): Show[List[A]] =
-    ???
+  implicit def listShow[A](implicit ev: Show[A]): Show[List[A]] = new Show[List[A]] {
+
+    def show(a:List[A]):String = a.iterator.map(ev.show).mkString("List(", ", ",")")
+  }
 
 
   // 2. Summoner (apply)
+  def apply[A](implicit ev:Show[A]):Show[A]=ev
 
   // 3. Syntax extensions
 
