@@ -10,4 +10,8 @@ trait Monad[F[_]] extends Functor[F] { self =>
 
 object Monad {
 
+ trait Ops[F[_],A] {
+   def flatMap[A, B](fa: F[A])(f: A => F[B]): F[B] = app.map(fa)(f).flatten
+ }
+
 }
