@@ -5,13 +5,12 @@ trait Monad[F[_]] extends Functor[F] { self =>
 
   def point[A](a: A): F[A]
 
-  def flatten[A](fa: F[F[A]]): F[A]
+  def flatten[A](fa: F[F[A]]): F[A] = flatMap(fa)(fa=>fa)
 }
 
 object Monad {
 
- trait Ops[F[_],A] {
-   def flatMap[A, B](fa: F[A])(f: A => F[B]): F[B] = app.map(fa)(f).flatten
- }
+   def flatMap[A, B](fa: F[A])(f: A => F[B]): F[B] = self.map(fa)(f).flatten
+
 
 }
